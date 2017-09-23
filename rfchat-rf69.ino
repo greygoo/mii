@@ -1,7 +1,7 @@
+#include <RH_RF69.h>
 #include <RHReliableDatagram.h>
 #include "UC121902-TNARX-A.h"
 //#include <RH_RF22.h>
-#include <RH_RF69.h>
 #include <SPI.h>
 #include "rfchat.h"
 
@@ -16,29 +16,38 @@ uint8_t inBytes[RH_RF69_MAX_MESSAGE_LEN];
 //uint8_t status[5];
 int i = 0;
 uint8_t dest;
-bool showrssi = 0;
+bool showrssi = 1;
 
 //Instance for display
-UC121902_TNARX_A::Display display(16, 5, 4);
+UC121902_TNARX_A::Display display(D3, D1, D0);
 
 // Instance of radio driver
 //RH_RF22 driver;
-RH_RF69 driver(15,0);
+RH_RF69 driver(D8, D2);
 // Class to manage messages
 RHReliableDatagram manager(driver, ID);
 
 void setup() {
   display.begin();
   Serial.begin(9600);
-  while (!Serial) 
-    ;
+  //while (!Serial)
+  //  ;
   Serial.println("Serial port initialized");
+  display.print("Serial port initialized");
   if ( !manager.init() ) {
     Serial.println("RH69 init failed");
+    display.print("RH69 init failed");
   } else {
     Serial.println("RH96 init ok");
+    display.print("RH96 init ok");
   }
-  driver.setTxPower(14, true);
+  driver.setTxPower(20, true);
+  if (!driver.setFrequency(868.0))
+    Serial.println("setFrequency failed");
+  //if (!driver.setModemConfig(RH_RF69::FSK_Rb2_4Fd4_8))
+  //  Serial.println("setModemConfig failed");
+      
+
 }
 
 // Buffer for received messages
@@ -53,19 +62,19 @@ void loop() {
 
     if ( inBytes[i] == 10 || i == RH_RF69_MAX_MESSAGE_LEN ) {
       // Copy serial buffer array to output as casting it to char breaks the sendtoWait call
-      inBytes[i+1] = '\0';
+      inBytes[i + 1] = '\0';
       uint8_t output[RH_RF69_MAX_MESSAGE_LEN];
-      memcpy(output, inBytes, i+1);
-      output[i+1] = '\0';
+      memcpy(output, inBytes, i + 1);
+      output[i + 1] = '\0';
 
-      // Enter command mode if leading character in serial buffer array is "/" 
+      // Enter command mode if leading character in serial buffer array is "/"
       if ( inBytes[0] == 47 ) {
         command(inBytes[1]);
       }
       else {
         // send mode
         if (showrssi) {
-	        showRssi();
+          showRssi();
         }
         Serial.print(ID);
         Serial.print("->");
@@ -78,10 +87,14 @@ void loop() {
       i = 0;
     }
     else {
-      i++; 
+      i++;
     }
   }
-  rfreceive();
+  inBytes[0] = 48;
+  rfsend();
+  delay(500);
+  //rfreceive();
+  //showRssi();
 }
 
 
@@ -100,28 +113,28 @@ void rfreceive() {
   //if ( DEBUG ) Serial.println("Receive mode");
   if ( manager.available() ) {
     if ( DEBUG ) Serial.println("DEBUG: Got something in the rf buffer");
-    
+
     uint8_t len = sizeof(buf);
     uint8_t from;
 
     if ( manager.recvfromAck(buf, &len, &from) ) {
       if ( showrssi ) {
-	      showRssi();
+        showRssi();
       }
       Serial.print(from);
       Serial.print(" ");
       Serial.println((char*)buf);
-      display.print((char*)buf);
-    } 
+      //display.print((char*)buf);
+    }
     else {
       Serial.println("fetching from RF device buffer failed");
-    }  
+    }
   }
 }
 
 
 /*void rfstatus() {
-  if ( !( status[0] = driver.statusRead()) ) { 
+  if ( !( status[0] = driver.statusRead()) ) {
     Serial.println("can't read status");
   }
   if ( !(status[1] = driver.adcRead()) ) {
@@ -136,7 +149,7 @@ void rfreceive() {
   if ( !(status[4] = driver.ezmacStatusRead()) ) {
     Serial.println("can't read ezmacStatus");
   }
-}
+  }
 */
 
 /*void printstatus() {
@@ -149,17 +162,17 @@ void rfreceive() {
   Serial.print("WUT: ");
   Serial.println(status[3]);
   Serial.print("ezmacStatus: ");
-  Serial.println(status[4]); 
-}*/
+  Serial.println(status[4]);
+  }*/
 
 
 void showRssi() {
   //if ( DEBUG ) Serial.println("RSSI mode");
   uint8_t rssi = driver.lastRssi();
-  if ( DEBUG ) Serial.print("(RSSI: ");
-  if ( DEBUG ) Serial.print(rssi);
-  if ( DEBUG ) Serial.print(") ");
-  // display.print(rssi);
+  //if ( DEBUG ) Serial.print("(RSSI: ");
+  //if ( DEBUG ) Serial.print(rssi);
+  //if ( DEBUG ) Serial.print(") ");
+  display.print(rssi);
 }
 
 
@@ -181,7 +194,7 @@ void setID() {
   if ( DEBUG ) Serial.println(tmp);
   if ( tmp >= 0 && tmp <= 255 ) {
     ID = tmp;
-  } 
+  }
   if ( DEBUG ) {
     Serial.print("Setting ID to: ");
     Serial.println(ID);
@@ -199,7 +212,7 @@ void rssiswitch() {
         showrssi = false;
         break;
       case 1:
-	Serial.println("Showing RSSI values");
+        Serial.println("Showing RSSI values");
         showrssi = true;
         break;
       default:
@@ -219,7 +232,7 @@ uint16_t retrieveAddress(uint8_t asciiArray[]) {
     address = (( asciiArray[2] - 48 ) * 100) + (( asciiArray[3] - 48 ) * 10) + asciiArray[4] - 48;
     if ( DEBUG ) Serial.println(address);
     return address;
-  } 
+  }
   if ( isInteger( asciiArray[2]) && isInteger(asciiArray[3]) && !(isInteger(asciiArray[4])) ) {
     address = (( asciiArray[2] - 48 ) * 10) + asciiArray[3] - 48;
     if ( DEBUG ) Serial.println(address);
@@ -250,22 +263,22 @@ void command(uint8_t command) {
   if ( DEBUG ) Serial.println("entering command mode");
 
   switch ( command ) {
-  case 48:
-    setdestination();
-    break;
-  case 49:
-    setID();
-    break;
-//  case 50:
-//    rfstatus();
-//    printstatus();
-//    break;
-  case 51:
-    rssiswitch();
-    break;
-  default:
-    Serial.println("Not a valid command");
-    break;
+    case 48:
+      setdestination();
+      break;
+    case 49:
+      setID();
+      break;
+    //  case 50:
+    //    rfstatus();
+    //    printstatus();
+    //    break;
+    case 51:
+      rssiswitch();
+      break;
+    default:
+      Serial.println("Not a valid command");
+      break;
   }
 }
 
