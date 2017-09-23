@@ -1,0 +1,16 @@
+# get tools and libs
+git submodule init
+git submodule update
+
+# create links to libraries
+pushd libraries
+ln -sf ../modules/{RadioHead,UC121902-TNARX-A/libraries/UC121902-TNARX-A} .
+popd
+
+# create link to tools
+pushd tools
+ln -sf ../modules/Arduino-Esp8266-Makefile .
+
+# install required tools for Arduino Makefile
+pushd tools/Arduino-Esp8266-Makefile && python setup.py
+popd
