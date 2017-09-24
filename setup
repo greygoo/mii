@@ -10,6 +10,7 @@ popd
 # create link to tools
 pushd tools
 ln -sf ../modules/Arduino-Esp8266-Makefile .
+popd
 
 # install required tools for Arduino Makefile
 pushd tools/Arduino-Esp8266-Makefile && python setup.py
