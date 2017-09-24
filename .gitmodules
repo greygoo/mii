@@ -1,9 +1,9 @@
 [submodule "modules/RadioHead"]
 	path = modules/RadioHead
-	url = git@github.com:adafruit/RadioHead.git
+	url = https://github.com/adafruit/RadioHead.git 
 [submodule "modules/UC121902-TNARX-A"]
 	path = modules/UC121902-TNARX-A
-	url = git@github.com:niccokunzmann/UC121902-TNARX-A.git
+	url = https://github.com/niccokunzmann/UC121902-TNARX-A.git
 [submodule "modules/Arduino-Esp8266-Makefile"]
 	path = modules/Arduino-Esp8266-Makefile
-	url = git@github.com:jorgegarciadev/Arduino-Esp8266-Makefile.git
+	url = https://github.com/jorgegarciadev/Arduino-Esp8266-Makefile.git
