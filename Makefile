@@ -10,4 +10,4 @@ FLASH_FREQ = 40MHz
 include tools/Arduino-Esp8266-Makefile/arduinoEsp8266.mk
 
 serial	:
-	screen /dev/ttyUSB0 9600
+	xterm -e "screen /dev/ttyUSB0 9600"
