@@ -19,6 +19,11 @@
 				<Option type="4" />
 				<Option compiler="gcc" />
 			</Target>
+			<Target title="clean">
+				<Option output="mii" prefix_auto="1" extension_auto="1" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+			</Target>
 		</Build>
 		<Unit filename="Makefile">
 			<Option target="&lt;{~None~}&gt;" />
