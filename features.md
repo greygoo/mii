@@ -6,12 +6,12 @@
 
 ## Network
 * Wifi Access point
-** WPA
-** Essid definition?
+  * WPA
+  * Essid definition?
 
 * ISM mesh
-** pre programmed ID
-** encryption possible?
+  * pre programmed ID
+  * encryption possible?
 
 * ISM performance  
   * Radio settings?  
@@ -24,28 +24,28 @@
   * how to sync
 
 * battery level
-** meassurement via A0
-** notifications for recharge
-** battery temperature handling?
+  * meassurement via A0
+  * notifications for recharge
+  * battery temperature handling?
 
 ## Security
 * 2FA?
 
 * WPA security
-** run default WPA crack tools
+  * run default WPA crack tools
 
 * ISM security
-** default test tools available?
-** define AES encryption algo
+  * default test tools available?
+  * define AES encryption algo
 
 * OTA update security
-** see WPA
+  * see WPA
 
 * local security
-** code obfuscation?
-** secrets retrieval via local mem?
-** self destruct mode?
-** encrypted firmware?
+  * code obfuscation?
+  * secrets retrieval via local mem?
+  * self destruct mode?
+  * encrypted firmware?
 
 ## Update
 * modify firmware to make local update authenticated
@@ -60,17 +60,17 @@
 
 ## Display
 * different modes
-** show RSSI
-** show last received message
-** show temperature
+  * show RSSI
+  * show last received message
+  * show temperature
 
 ## UI
 ### Web
 
 * Chat interface
-** show last 10 messages
-** delete received messages
-** write messages
-** list network nodes
+  * show last 10 messages
+  * delete received messages
+  * write messages
+  * list network nodes
 
 
