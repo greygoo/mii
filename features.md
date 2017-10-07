@@ -13,15 +13,15 @@
 ** pre programmed ID
 ** encryption possible?
 
-* ISM performance
-** Radio settings?
-** 20dBm send
-** receive booster enabled
+* ISM performance  
+** Radio settings?  
+** 20dBm send  
+** receive booster enabled  
 
 ## Powermanagement
 * low power mode
-** send/transmit intervals
-** how to sync
+  * send/transmit intervals
+  * how to sync
 
 * battery level
 ** meassurement via A0
