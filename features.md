@@ -14,9 +14,9 @@
 ** encryption possible?
 
 * ISM performance  
-** Radio settings?  
-** 20dBm send  
-** receive booster enabled  
+  * Radio settings?  
+  * 20dBm send  
+  * receive booster enabled  
 
 ## Powermanagement
 * low power mode
