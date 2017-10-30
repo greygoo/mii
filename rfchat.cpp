@@ -3,13 +3,22 @@
 #include "UC121902-TNARX-A.h"
 //#include <RH_RF22.h>
 #include <SPI.h>
+#include <ESP8266WiFi.h>
+#include <WiFiClient.h>
+#include <ESP8266WebServer.h>
+
 #include "rfchat.h"
+#include "index.html.h"
 
 // Define max size per sent packet
 #define DEBUG true 
 
 // set default address to 0;
 int ID = 0;
+
+// AP credentials
+const char *ssid = "mii-devel";
+const char *password = "changeme";
 
 // Array to hold messages,
 uint8_t inBytes[RH_RF69_MAX_MESSAGE_LEN];
@@ -27,6 +36,17 @@ UC121902_TNARX_A::Display display(D3, D1, D0);
 RH_RF69 driver(D8, D2);
 // Class to manage messages
 RHReliableDatagram manager(driver, ID);
+
+// start webserver
+ESP8266WebServer server(80);
+
+void handle_index_html() {
+  server.send_P(200, "text/html", index_html);
+}
+
+void handle_not_found() {
+  server.send(404, "text/plain", "File Not Found");
+}
 
 void setup() {
   display.begin();
@@ -47,7 +67,18 @@ void setup() {
     Serial.println("setFrequency failed");
   //if (!driver.setModemConfig(RH_RF69::FSK_Rb2_4Fd4_8))
   //  Serial.println("setModemConfig failed");
-      
+
+  // Setup AP
+  WiFi.softAP(ssid, password);
+  IPAddress apIP = WiFi.softAPIP();
+  Serial.print("AP IP address: ");
+  Serial.println(apIP);
+
+  // configure webserver and start it
+  server.on("/", handle_index_html);
+  server.onNotFound(handle_not_found);
+  server.begin();
+  Serial.println("HTTP server started");
 
 }
 
