@@ -6,7 +6,7 @@
 #include "rfchat.h"
 
 // Define max size per sent packet
-#define DEBUG true
+#define DEBUG true 
 
 // set default address to 0;
 int ID = 0;
@@ -17,6 +17,7 @@ uint8_t inBytes[RH_RF69_MAX_MESSAGE_LEN];
 int i = 0;
 uint8_t dest;
 bool showrssi = 1;
+bool dotest = 0;
 
 //Instance for display
 UC121902_TNARX_A::Display display(D3, D1, D0);
@@ -90,13 +91,28 @@ void loop() {
       i++;
     }
   }
-  inBytes[0] = 48;
-  rfsend();
-  delay(500);
-  //rfreceive();
-  //showRssi();
+  // check if testmode is set and start sending packets every 5 seconds
+  if ( dotest == 1 ) {
+    inBytes[0] = 48;
+    rfsend();
+    delay(500);
+  }
+  else { 
+    rfreceive();
+    showRssi();
+  }
 }
 
+void testmode() {
+  if ( inBytes[2] == 49 ) {
+    Serial.println("Entering testmode");
+    dotest = 1;
+  } 
+  else {
+    Serial.println("Leaving testmode");
+    dotest = 0;
+  }
+}
 
 void rfsend() {
   //if ( DEBUG ) Serial.println("Send mode");
@@ -128,6 +144,7 @@ void rfreceive() {
     }
     else {
       Serial.println("fetching from RF device buffer failed");
+      display.print("no signal");
     }
   }
 }
@@ -275,6 +292,9 @@ void command(uint8_t command) {
     //    break;
     case 51:
       rssiswitch();
+      break;
+    case 52:
+      testmode();
       break;
     default:
       Serial.println("Not a valid command");
