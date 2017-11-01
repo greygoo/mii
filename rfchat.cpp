@@ -55,6 +55,7 @@ void setup() {
   //  ;
   Serial.println("Serial port initialized");
   display.print("Serial port initialized");
+  delay(5000);
   if ( !manager.init() ) {
     Serial.println("RH69 init failed");
     display.print("RH69 init failed");
@@ -62,6 +63,7 @@ void setup() {
     Serial.println("RH96 init ok");
     display.print("RH96 init ok");
   }
+  delay(5000);
   driver.setTxPower(20, true);
   if (!driver.setFrequency(868.0))
     Serial.println("setFrequency failed");
@@ -73,6 +75,7 @@ void setup() {
   IPAddress apIP = WiFi.softAPIP();
   Serial.print("AP IP address: ");
   Serial.println(apIP);
+  display.print(apIP);
 
   // configure webserver and start it
   server.on("/", handle_index_html);
@@ -171,11 +174,11 @@ void rfreceive() {
       Serial.print(from);
       Serial.print(" ");
       Serial.println((char*)buf);
-      //display.print((char*)buf);
+      display.print((char*)buf);
     }
     else {
       Serial.println("fetching from RF device buffer failed");
-      display.print("no signal");
+      //display.print("no signal");
     }
   }
 }
