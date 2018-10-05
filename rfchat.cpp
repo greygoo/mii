@@ -38,7 +38,8 @@ RH_RF69 driver(D8, D2);
 RHReliableDatagram manager(driver, ID);
 
 // start webserver
-ESP8266WebServer server(80);
+//ESP8266WebServer server(80);
+WiFiServerSecure server(443);
 
 void handle_index_html() {
   server.send_P(200, "text/html", index_html);
