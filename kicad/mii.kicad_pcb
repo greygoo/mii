@@ -3,7 +3,7 @@
   (general
     (links 31)
     (no_connects 0)
-    (area 108.382999 82.982999 134.187001 126.059001)
+    (area 106.92 82.88238 135.75 129.74)
     (thickness 1.6)
     (drawings 4)
     (tracks 195)
@@ -197,7 +197,7 @@
     )
   )
 
-  (module wemos_d1_mini:D1_mini_board (layer F.Cu) (tedit 5766F65E) (tstamp 5B42398C)
+  (module wemos_d1_mini:D1_mini_board (layer F.Cu) (tedit 5BB757E9) (tstamp 5B42398C)
     (at 121.285 109.855)
     (path /5B41CB77)
     (fp_text reference U1 (at 1.27 18.81) (layer F.SilkS)
@@ -205,9 +205,6 @@
     )
     (fp_text value WeMos_mini (at 1.27 -19.05) (layer F.Fab)
       (effects (font (size 1 1) (thickness 0.15)))
-    )
-    (fp_text user WeMos (at 0 -15.24) (layer F.SilkS)
-      (effects (font (size 3 3) (thickness 0.15)))
     )
     (fp_line (start -6.35 3.81) (end -6.35 -10.16) (layer B.SilkS) (width 0.15))
     (fp_line (start -6.35 -10.16) (end 6.35 -10.16) (layer B.SilkS) (width 0.15))
