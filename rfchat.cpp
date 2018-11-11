@@ -43,7 +43,7 @@ void setup() {
     display.print("RH96 init ok");
   }
   driver.setTxPower(20, true);
-  if (!driver.setFrequency(868.0))
+  if (!driver.setFrequency(433.0))
     Serial.println("setFrequency failed");
   //if (!driver.setModemConfig(RH_RF69::FSK_Rb2_4Fd4_8))
   //  Serial.println("setModemConfig failed");
