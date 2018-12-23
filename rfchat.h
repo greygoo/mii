@@ -2,6 +2,8 @@ void setup();
 
 void loop();
 
+bool motionDetected(int sensor);
+
 void rfsend();
 
 void rfreceive(); 
